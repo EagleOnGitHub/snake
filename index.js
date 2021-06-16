@@ -51,10 +51,6 @@ function draw() {
     ctx.fillRect(food_position.x * tile, food_position.y * tile, tile, tile);
 }
 
-function position_equal(a, item) {
-    return a.x == item.x && a.y == item.y;
-}
-
 function end_game(message) {
     alert(message);
     throw new Error("Game over.");
