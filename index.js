@@ -22,13 +22,13 @@ let segments = [];
 let position = { x: size / 2, y: size / 2 };
 let length = 1;
 let last_time = Date.now();
-function food_random_position() {
+function random_food_position() {
     return {
         x: Math.floor(Math.random() * size),
         y: Math.floor(Math.random() * size),
     };
 }
-let food_position = food_random_position();
+let food_position = random_food_position();
 let direction = { x: 1, y: 0 };
 function didGameEnd() {
     for (let i = 4; i < segments.length; i++) {
@@ -69,7 +69,12 @@ function move() {
     while (segments.length > length) segments.shift();
     if (position.x === food_position.x && position.y === food_position.y) {
         length++;
-        food_position = food_random_position();
+        food_position = random_food_position();
+        segments.forEach((item) => {
+            if (food_position.x == item.x && food_position.y == item.y) {
+                food_position = random_food_position();
+            }
+        });
     }
 }
 
