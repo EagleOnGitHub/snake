@@ -69,6 +69,7 @@ function move() {
     while (segments.length > length) segments.shift();
     if (position.x === food_position.x && position.y === food_position.y) {
         length++;
+        document.getElementById("b").innerHTML = length;
         food_position = random_food_position();
         segments.forEach((item) => {
             if (food_position.x == item.x && food_position.y == item.y) {
