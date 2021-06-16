@@ -85,18 +85,15 @@ document.addEventListener("keydown", (e) => {
         if (direction.x === 0) {
             direction = { x: -1, y: 0 };
         }
-    }
-    if (key == "KeyS" || key == "ArrowDown") {
+    } if (key == "KeyS" || key == "ArrowDown") {
         if (direction.y === 0) {
             direction = { x: 0, y: 1 };
         }
-    }
-    if (key == "KeyD" || key == "ArrowRight") {
+    } if (key == "KeyD" || key == "ArrowRight") {
         if (direction.x === 0) {
             direction = { x: 1, y: 0 };
         }
-    }
-    if (key == "KeyW" || key == "ArrowUp") {
+    } if (key == "KeyW" || key == "ArrowUp") {
         if (direction.y === 0) {
             direction = { x: 0, y: -1 };
         }
