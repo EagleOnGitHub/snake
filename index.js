@@ -13,6 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+function color_lerp(a, b, amount) {
+    const ar = a >> 16,
+          ag = a >> 8 & 0xff,
+          ab = a & 0xff,
+          br = b >> 16,
+          bg = b >> 8 & 0xff,
+          bb = b & 0xff,
+          rr = ar + amount * (br - ar),
+          rg = ag + amount * (bg - ag),
+          rb = ab + amount * (bb - ab);
+    return (rr << 16) + (rg << 8) + (rb | 0);
+};
 let canvas = document.getElementById("a");
 let ctx = canvas.getContext("2d");
 let size = 20;
@@ -44,7 +56,8 @@ function draw() {
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, size * tile, size * tile);
     ctx.fillStyle = "limegreen";
-    segments.forEach(function (segment) {
+    segments.forEach((segment, index) => {
+        ctx.fillStyle = color_lerp(0x00ff00, 0x003300, index / segments.length);
         ctx.fillRect(segment.x * tile, segment.y * tile, tile, tile);
     });
     ctx.fillStyle = "rgb(255, 0, 0)";
