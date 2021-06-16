@@ -81,42 +81,22 @@ function move() {
 
 document.addEventListener("keydown", (e) => {
     let key = e.code;
-    if (key == "KeyA") {
+    if (key == "KeyA" || key == "ArrowLeft") {
         if (direction.x === 0) {
             direction = { x: -1, y: 0 };
         }
     }
-    if (key == "ArrowLeft") {
-        if (direction.x === 0) {
-            direction = { x: -1, y: 0 };
-        }
-    }
-    if (key == "KeyS") {
+    if (key == "KeyS" || key == "ArrowDown") {
         if (direction.y === 0) {
             direction = { x: 0, y: 1 };
         }
     }
-    if (key == "ArrowDown") {
-        if (direction.y === 0) {
-            direction = { x: 0, y: 1 };
-        }
-    }
-    if (key == "KeyD") {
+    if (key == "KeyD" || key == "ArrowRight") {
         if (direction.x === 0) {
             direction = { x: 1, y: 0 };
         }
     }
-    if (key == "ArrowRight") {
-        if (direction.x === 0) {
-            direction = { x: 1, y: 0 };
-        }
-    }
-    if (key == "KeyW") {
-        if (direction.y === 0) {
-            direction = { x: 0, y: -1 };
-        }
-    }
-    if (key == "ArrowUp") {
+    if (key == "KeyW" || key == "ArrowUp") {
         if (direction.y === 0) {
             direction = { x: 0, y: -1 };
         }
