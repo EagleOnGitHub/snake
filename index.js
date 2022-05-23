@@ -104,6 +104,7 @@ function move() {
 }
 
 document.addEventListener("keydown", (e) => {
+    key = e.code;
     switch(key) {
         case KeyA:
         case ArrowLeft:
