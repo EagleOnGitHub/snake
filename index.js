@@ -106,17 +106,17 @@ function move() {
 document.addEventListener("keydown", (e) => {
     key = e.code;
     switch(key) {
-        case KeyA:
-        case ArrowLeft:
+        case "KeyA":
+        case "ArrowLeft":
             direction.x === 0 && (direction = { x: -1, y: 0 });
-        case KeyS:
-        case ArrowDown:
+        case "KeyS":
+        case "ArrowDown":
             direction.y === 0 && (direction = { x: 0, y: 1 });
-        case KeyD:
-        case ArrowRight:
+        case "KeyD":
+        case "ArrowRight":
             direction.x === 0 && (direction = { x: 1, y: 0 });
-        case KeyW:
-        case ArrowUp:
+        case "KeyW":
+        case "ArrowUp":
             direction.y === 0 && (direction = { x: 0, y: -1 });
     }
 });
