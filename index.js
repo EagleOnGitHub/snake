@@ -13,6 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+function random_food_position() {
+    return {
+        x: Math.floor(Math.random() * st),
+        y: Math.floor(Math.random() * st),
+    };
+}
+
 let canvas = document.getElementById("a");
 let ctx = canvas.getContext("2d");
 let st = 20; // size, tile
@@ -34,13 +41,6 @@ function check_end() {
         if (collide) return true;
     }
     return false;
-}
-
-function random_food_position() {
-    return {
-        x: Math.floor(Math.random() * st),
-        y: Math.floor(Math.random() * st),
-    };
 }
 
 function color_lerp(a, b, amount) {
