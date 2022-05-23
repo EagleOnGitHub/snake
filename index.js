@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 EagleOnGitHub
+ * Copyright 2021-2022 EagleOnGitHub
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+let canvas = document.getElementById("a");
+let ctx = canvas.getContext("2d");
+let st = 20; // size, tile
+let fps = 6;
+let segments = [];
+let position = { x: st / 2, y: st / 2 };
+let length = 1;
+let last_time = Date.now();
+let food_position = random_food_position();
+let direction = { x: 1, y: 0 };
+
+// whenever i play the game this one guy works late way after i've
+// already collided with something, but, the code is....... sacred
+// and shall not be touched, so keep it here, or bad things happen
+function check_end() {
+    for (let i = 4; i < segments.length; i++) {
+        const collide =
+            segments[i].x === segments[0].x && segments[i].y === segments[0].y;
+        if (collide) return true;
+    }
+    return false;
+}
+
+function random_food_position() {
+    return {
+        x: Math.floor(Math.random() * st),
+        y: Math.floor(Math.random() * st),
+    };
+}
+
 function color_lerp(a, b, amount) {
     const ar = a >> 16,
           ag = a >> 8 & 0xff,
@@ -25,43 +55,18 @@ function color_lerp(a, b, amount) {
           rb = ab + amount * (bb - ab);
     return (rr << 16) + (rg << 8) + (rb | 0);
 };
-let canvas = document.getElementById("a");
-let ctx = canvas.getContext("2d");
-let size = 20;
-let tile = 20;
-let fps = 6;
-let segments = [];
-let position = { x: size / 2, y: size / 2 };
-let length = 1;
-let last_time = Date.now();
-function random_food_position() {
-    return {
-        x: Math.floor(Math.random() * size),
-        y: Math.floor(Math.random() * size),
-    };
-}
-let food_position = random_food_position();
-let direction = { x: 1, y: 0 };
-function didGameEnd() {
-    for (let i = 4; i < segments.length; i++) {
-        const didCollide =
-            segments[i].x === segments[0].x && segments[i].y === segments[0].y;
-        if (didCollide) return true;
-    }
-    return false;
-}
 
 function draw() {
-    ctx.clearRect(0, 0, size * tile, size * tile);
+    ctx.clearRect(0, 0, st * st, st * st);
     ctx.fillStyle = "black";
-    ctx.fillRect(0, 0, size * tile, size * tile);
+    ctx.fillRect(0, 0, st * st, st * st);
     ctx.fillStyle = "limegreen";
     segments.forEach((segment, index) => {
         ctx.fillStyle = color_lerp(0x00ff00, 0x003300, index / segments.length);
-        ctx.fillRect(segment.x * tile, segment.y * tile, tile, tile);
+        ctx.fillRect(segment.x * st, segment.y * st, st, st);
     });
     ctx.fillStyle = "rgb(255, 0, 0)";
-    ctx.fillRect(food_position.x * tile, food_position.y * tile, tile, tile);
+    ctx.fillRect(food_position.x * st, food_position.y * st, st, st);
 }
 
 function end_game(message) {
@@ -71,18 +76,24 @@ function end_game(message) {
 
 function move() {
     position = { x: position.x + direction.x, y: position.y + direction.y };
+    
     ["x", "y"].forEach((direction) => {
-        while (position[direction] < 0) position[direction] += size;
-        while (position[direction] >= size) position[direction] -= size;
+        while (position[direction] < 0) position[direction] += st;
+        while (position[direction] >= st) position[direction] -= st;
     });
+    
     segments.push(position);
-    if (didGameEnd()) {
+    
+    if (check_end()) {
         end_game("You lost!");
     }
+    
     while (segments.length > length) segments.shift();
+    
     if (position.x === food_position.x && position.y === food_position.y) {
         length++;
         document.getElementById("b").innerHTML = length;
+        
         food_position = random_food_position();
         segments.forEach((item) => {
             if (food_position.x == item.x && food_position.y == item.y) {
@@ -93,23 +104,19 @@ function move() {
 }
 
 document.addEventListener("keydown", (e) => {
-    let key = e.code;
-    if (key == "KeyA" || key == "ArrowLeft") {
-        if (direction.x === 0) {
-            direction = { x: -1, y: 0 };
-        }
-    } if (key == "KeyS" || key == "ArrowDown") {
-        if (direction.y === 0) {
-            direction = { x: 0, y: 1 };
-        }
-    } if (key == "KeyD" || key == "ArrowRight") {
-        if (direction.x === 0) {
-            direction = { x: 1, y: 0 };
-        }
-    } if (key == "KeyW" || key == "ArrowUp") {
-        if (direction.y === 0) {
-            direction = { x: 0, y: -1 };
-        }
+    switch(key) {
+        case KeyA:
+        case ArrowLeft:
+            direction.x === 0 && (direction = { x: -1, y: 0 });
+        case KeyS:
+        case ArrowDown:
+            direction.y === 0 && (direction = { x: 0, y: 1 });
+        case KeyD:
+        case ArrowRight:
+            direction.x === 0 && (direction = { x: 1, y: 0 });
+        case KeyW:
+        case ArrowUp:
+            direction.y === 0 && (direction = { x: 0, y: -1 });
     }
 });
 
